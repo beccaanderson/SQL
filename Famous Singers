@@ -1,0 +1,85 @@
+#Here is the dataset I created that will be utilized in the Famous Singers analysis:
+
+CREATE TABLE singers (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    fullname TEXT,
+    age INTEGER);
+    
+INSERT INTO singers (fullname, age) VALUES ("Britney Spears", "41");
+INSERT INTO singers (fullname, age) VALUES ("Justin Timberlake", "42");
+INSERT INTO singers (fullname, age) VALUES ("Blake Shelton", "47");
+INSERT INTO singers (fullname, age) VALUES ("Gwen Stefani", "53");
+INSERT INTO singers (fullname, age) VALUES ("Whitney Houston", "48");
+INSERT INTO singers (fullname, age) VALUES ("Bobby Brown", "54");
+
+CREATE table genre (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    person_id INTEGER,
+    name TEXT);
+    
+INSERT INTO genre (person_id, name) VALUES (1, "pop");
+INSERT INTO genre (person_id, name) VALUES (1, "electropop");
+INSERT INTO genre (person_id, name) VALUES (2, "pop/R&B");
+INSERT INTO genre (person_id, name) VALUES (2, "hip-hop");
+INSERT INTO genre (person_id, name) VALUES (3, "country");
+INSERT INTO genre (person_id, name) VALUES (4, "pop/R&B");
+INSERT INTO genre (person_id, name) VALUES (4, "new wave");
+INSERT INTO genre (person_id, name) VALUES (5, "pop/R&B");
+INSERT INTO genre (person_id, name) VALUES (5, "hip-hop");
+INSERT INTO genre (person_id, name) VALUES (6, "R&B/soul");
+
+CREATE TABLE married (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    person1_id INTEGER,
+    person2_id INTEGER);
+
+INSERT INTO married (person1_id, person2_id)
+    VALUES (1, 2);
+INSERT INTO married (person1_id, person2_id)
+    VALUES (3, 4);
+INSERT INTO married (person1_id, person2_id)
+    VALUES (5, 6);
+
+#Analysis
+
+#Which singers fall inot the pop/R&B genre?
+
+SELECT singers.fullname 
+AS singers_fullname, genre.name
+AS genre_name
+FROM singers
+JOIN genre
+ON singers.id=genre.person_id
+WHERE genre.name= "pop/R&B";
+
+#Which singers are of the age 45 or older?
+
+SELECT fullname, age
+FROM singers
+WHERE age>= 45
+ORDER BY age asc;
+
+#Which singers are married to each other?
+
+SELECT a.fullname
+AS married_singer_1, b.fullname
+AS married_singer_2
+FROM married
+JOIN singers a 
+ON married.person1_id= a.id
+JOIN singers b
+ON married.person2_id=b.id;
+
+#How many artists sing country music?
+
+SELECT COUNT(name)
+AS genre_count
+FROM genre
+GROUP BY name
+HAVING name="country";
+
+
+
+
+
+
