@@ -1,0 +1,85 @@
+#In this project, I worked with a dataset called chinook, representing a digital media store including information about artists, albums, invoices, customers, employees, etc.
+#Below are the questions I came up with to analyze the dataset, as well as the SQL code I wrote to answer these questions.
+
+#1. Show the first and last names of customers who live in France as well as their billing city.
+SELECT customers.FirstName, customers.LastName
+, customers.country, invoices.billingcity
+FROM chinook.customers
+LEFT OUTER JOIN invoices
+ON customers.customerID=invoices.customerid
+WHERE customers.country='France';
+
+#2. Find the track name, composer (if applicable), and milliseconds for all tracks that start with T and fall under 200,000 milliseconds.
+SELECT tracks.name, tracks.composer
+,tracks.milliseconds
+FROM chinook.tracks
+WHERE tracks.name LIKE 'T%'
+AND milliseconds<200000;
+
+#3. What are the total sales for 2013?
+SELECT SUM(Total)
+FROM chinook.Invoices
+WHERE InvoiceDate BETWEEN '2013-01-01' AND '2013-12-31';
+
+#4. Which sales agent made the most dollars in sales in 2013?
+SELECT emp.FirstName, emp.LastName,
+ROUND(SUM(Inv.Total), 2) as 'Total Sales'
+FROM chinook.Employees emp
+
+JOIN chinook.Customers cust
+ON cust.SupportRepID=emp.EmployeeId
+
+JOIN chinook.Invoices Inv
+ON Inv.CustomerId = cust.CustomerId
+
+WHERE emp.Title = 'Sales Support Agent'
+AND INv.InvoiceDate LIKE '2013%'
+GROUP BY emp.FirstName
+ORDER BY (round(sum(Inv.Total), 2)) DESC LIMIT 1;
+
+#5. Show the name and hire date for employees hired in 2002.
+SELECT FirstName, HireDate
+FROM chinook.employees
+WHERE HireDate LIKE '%2002%';
+
+#6. Find a unique list of billing cities from the invoice table, and place them in alphabetical order.
+SELECT DISTINCT BillingCity
+FROM chinook.Invoices
+ORDER BY BillingCity asc;
+
+#7. Show the full names, customer ID, and country of customers who are not in Canada or the United States.
+SELECT FirstName, LastName, CustomerID, Country
+FROM chinook.customers
+WHERE Country != "USA"
+AND Country != "Canada";
+
+#8. Write a query that shows the invoice ID and billing city associated with each sales agent.
+SELECT emp.LastName, emp.Firstname, inv.InvoiceId, inv.BillingCity
+FROM chinook.Employees emp
+JOIN chinook.Customers cust ON cust.SupportRepId = emp.EmployeeId
+JOIN chinook.Invoices Inv On Inv.CustomerId = cust.CustomerId;
+
+#9. How many invoices were there in 2013?
+SELECT COUNT(*)
+AS Amount_Invoices
+FROM chinook.Invoices
+WHERE InvoiceDate BETWEEN '2013-01-01' AND '2013-12-31';
+
+#10. Show the full name, phone number, and email of all IT members, staff and management included.
+SELECT FirstName, LastName, Phone, Email
+FROM chinook.employees
+WHERE Title LIKE 'IT%'
+
+#11. What are the total sales for 2013?
+SELECT SUM(Total)
+AS Total_Sales
+FROM chinook.Invoices
+WHERE InvoiceDate BETWEEN '2013-01-01' AND '2013-12-31';
+
+#12. Write a query that shows the number of customers in each country.
+SELECT country, COUNT(country)
+AS Customer_Count
+FROM chinook.customers
+GROUP BY country;
+
+
