@@ -18,6 +18,7 @@ AND milliseconds<200000;
 
 #3. What are the total sales for 2013?
 SELECT SUM(Total)
+As Total_Sales
 FROM chinook.Invoices
 WHERE InvoiceDate BETWEEN '2013-01-01' AND '2013-12-31';
 
@@ -68,15 +69,9 @@ WHERE InvoiceDate BETWEEN '2013-01-01' AND '2013-12-31';
 #10. Show the full name, phone number, and email of all IT members, staff and management included.
 SELECT FirstName, LastName, Phone, Email
 FROM chinook.employees
-WHERE Title LIKE 'IT%'
+WHERE Title LIKE 'IT%';
 
-#11. What are the total sales for 2013?
-SELECT SUM(Total)
-AS Total_Sales
-FROM chinook.Invoices
-WHERE InvoiceDate BETWEEN '2013-01-01' AND '2013-12-31';
-
-#12. Write a query that shows the number of customers in each country.
+#11. Write a query that shows the number of customers in each country.
 SELECT country, COUNT(country)
 AS Customer_Count
 FROM chinook.customers
